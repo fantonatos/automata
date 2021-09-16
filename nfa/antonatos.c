@@ -18,12 +18,6 @@ struct transition {
 	struct transition *next;
 };
 
-void    ldfile(char *);
-short   ldfile_getstate(char *);
-short   ldfile_transition_getdest(char *);
-char    ldfile_transition_getinput(char *);
-void    ldfile_transition_add(char, short, short);
-
 static struct transition   *transitions[1000]   = { NULL };
 static bool                 accept_states[1000] = { false };
 static signed short         start = -1;
@@ -32,13 +26,12 @@ void
 ldfile_transition_add(char input, short dest_state, short origin_state)
 {
 	struct transition *tr = (struct transition *) calloc(1, sizeof(struct transition));
-	*tr = (struct transition) { .input = input, .dest = dest_state, .next = NULL };
+	*tr = (struct transition) { input, dest_state, NULL };
 
 	if (transitions[origin_state] == NULL)
 		transitions[origin_state] = tr;
 	else {
-		struct transition *iter;
-		iter = transitions[origin_state];
+		struct transition *iter = transitions[origin_state];
 		while(iter->next != NULL) {
 			iter = iter->next;
 		}
@@ -94,13 +87,12 @@ ldfile(char *filename)
 					start = ldfile_getstate(b);
 				if (strstr(b, "accept"))
 					accept_states[ldfile_getstate(b)] = true;
-			} else if (b[0] == 't') {
+			} else if (b[0] == 't')
 				ldfile_transition_add(
 					ldfile_transition_getinput(b),
 					ldfile_transition_getdest(b),
 					ldfile_getstate(b)
 				);
-			}
 			memset(b, 0, sizeof(b));
 			bx = 0;
 		} else
@@ -115,18 +107,15 @@ ldfile(char *filename)
 bool
 simulate(short state, char *input)
 {
-	char inch = input[0], remaining[strlen(input) + 1];
-	(void) memset(remaining, 0, sizeof(remaining));
+	char inch = input[0], *remaining = calloc(1, strlen(input) + 1);
 	(void) strcpy(remaining, input + 1);
 
 	for (struct transition *iterator = transitions[state]; iterator != NULL; iterator = iterator->next)
-		if (inch == iterator->input)
-			if (simulate(iterator->dest, remaining) == true)
-				return true;
+		if (inch == iterator->input && simulate(iterator->dest, remaining))
+			return true;
 
-	if (input[0] == '\0' && accept_states[state])
-		return true;
-	return false;
+	free(remaining);
+	return (input[0] == '\0' && accept_states[state]);
 }
 
 int
