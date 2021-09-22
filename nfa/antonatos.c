@@ -18,6 +18,9 @@ struct transition {
 	struct transition *next;
 };
 
+enum outcome { UNKNOWN = 0, ACCEPTED = 1, REJECTED = -1};
+
+static enum outcome         results[1000]       = { UNKNOWN };
 static struct transition   *transitions[1000]   = { NULL };
 static bool                 accept_states[1000] = { false };
 static signed short         start = -1;
@@ -104,24 +107,27 @@ ldfile(char *filename)
 	fclose(fp);
 }
 
-bool
+void
 simulate(short state, char *input)
 {
 	char inch = input[0], *remaining = calloc(1, strlen(input) + 1);
+	bool recognized = false;
 	(void) strcpy(remaining, input + 1);
 
 	for (struct transition *iterator = transitions[state]; iterator != NULL; iterator = iterator->next)
-		if (inch == iterator->input && simulate(iterator->dest, remaining))
-			return true;
-
+		if ((inch == iterator->input) && (recognized = true))
+			simulate(iterator->dest, remaining);
+	
 	free(remaining);
-	return (input[0] == '\0' && accept_states[state]);
+	if (input[0] == '\0') results[state] = (accept_states[state]) ? ACCEPTED : REJECTED;
 }
 
 int
 main(int argc, char **argv)
 {
 	char *filename, *input;
+	bool accepted = false;
+	short i;
 
 	if (argc != 3)
 		printf("Usage: antonatos sample.txt 'input'\n"), exit(1);
@@ -131,6 +137,19 @@ main(int argc, char **argv)
 	input = argv[2];
 	ldfile(filename);
 
-	printf("%s\n", simulate(start, input) ? "accept" : "reject");
+	simulate(start, input);
+
+	for (i = 0; i < 1000; i++) {
+		if (results[i] == ACCEPTED) accepted = true;
+	}
+
+	printf("%s", accepted ? "accept" : "reject");
+
+	for (i = 0; i < 1000; i++) {
+		if ((results[i] == ACCEPTED && accepted == true) || (results[i] == REJECTED && accepted == false))
+			printf(" %d", i);
+	}
+
+	printf("\n");
 	return 0;
 }
