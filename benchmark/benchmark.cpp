@@ -23,7 +23,7 @@ main(int argc, char **argv)
 		command = std::string(command + " " + argv[i]);
 
 	gettimeofday(&start, NULL);
-    system(command.c_str());
+	system(command.c_str());
 	gettimeofday(&end, NULL);
 
 	long delta = ((end.tv_sec - start.tv_sec)*1000000L+end.tv_usec) - start.tv_usec;
