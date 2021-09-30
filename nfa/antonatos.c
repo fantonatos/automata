@@ -139,16 +139,14 @@ main(int argc, char **argv)
 
 	simulate(start, input);
 
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 1000; i++)
 		if (results[i] == ACCEPTED) accepted = true;
-	}
 
 	printf("%s", accepted ? "accept" : "reject");
 
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 1000; i++)
 		if ((results[i] == ACCEPTED && accepted == true) || (results[i] == REJECTED && accepted == false))
 			printf(" %d", i);
-	}
 
 	printf("\n");
 	return 0;
