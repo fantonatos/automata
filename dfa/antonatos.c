@@ -115,7 +115,7 @@ main (int argc, char **argv)
 	char output;
 
 	if (argc != 2)
-		printf("Usage: antonatos 'input'\n"), exit(1);
+		fprintf(stderr, "Usage: antonatos 'input'\n"), exit(1);
 
 	printgates();
 	for (char *iter = argv[1]; *iter != '\0'; iter++)

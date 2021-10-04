@@ -130,7 +130,7 @@ main(int argc, char **argv)
 	short i;
 
 	if (argc != 3)
-		printf("Usage: antonatos sample.txt 'input'\n"), exit(1);
+		fprintf(stderr, "Usage: antonatos sample.txt 'input'\n"), exit(1);
 
 	/* Read the file and construct the automaton. */
 	filename = argv[1];
