@@ -21,6 +21,7 @@ StateHandler      *simulate_x1(char);
 char               simulate_x2(char);
 char               simulate_x3(char);
 char               simulate_x4(char);
+void               set_states(char *);
 void               printgates();
 
 void
