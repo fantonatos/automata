@@ -109,17 +109,41 @@ simulate_x4(char c)
 	return r;
 }
 
+void
+set_states(char *states)
+{
+	for (int i = 0; i < 4; i++) {
+		switch (states[i])
+		{
+		case 'L':
+			gates[i] = LEFT;
+			break;
+		case 'R':
+			gates[i] = RIGHT;
+			break;
+		case 'C':
+			gates[i] = CENTER;
+			break;
+		default: /* Should technically never happen */
+			gates[i] = LEFT;
+			break;
+		}
+	}
+}
+
 int
 main (int argc, char **argv)
 {
 	StateHandler *st;
 	char output;
 
-	if (argc != 2)
-		fprintf(stderr, "Usage: antonatos 'input'\n"), exit(1);
+	if (argc != 3)
+		fprintf(stderr, "Usage: antonatos <paddle_states> <input>\n"), exit(1);
+
+	set_states(argv[1]);
 
 	printgates();
-	for (char *iter = argv[1]; *iter != '\0'; iter++)
+	for (char *iter = argv[2]; *iter != '\0'; iter++)
 	{
 		output = simulate_x1(*iter)(*iter);
 		printgates();

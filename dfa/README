@@ -1,0 +1,9 @@
+Simulation of (modified) problem 2.3 from Hopcroft/Ullman
+---------------------------------------------------------
+
+The task of this assignment was to create a program that
+simulates a game where a marble drops down severals slots
+and follows the direction of certain paddles.
+
+Fotis Antonatos
+October 2021
