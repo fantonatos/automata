@@ -1,12 +1,4 @@
-/*
- * © 2021 Fotis Antonatos
- *
- * Copying and distribution of this software, in binary or source format,
- * and any accompanying files or documentation, with or without modification,
- * are permitted in any medium without royalty provided the copyright
- * notice and this notice are preserved.  This file is offered as-is,
- * without any warranty.
- */
+/* Copyright 2021 Fotis Antonatos. See LICENSE */
 
 #include <stdio.h>
 #include <stdlib.h>
