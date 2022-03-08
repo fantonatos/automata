@@ -5,4 +5,4 @@
  - benchmark/ [More readable `time` application](benchmark/)
  - dfa/ [Solves a hard-coded problem](dfa/)
 
-Everything is open-source, freely modified, and distributed. See [LICENSE](LICENSE).
+See [LICENSE](LICENSE).
